@@ -36,11 +36,15 @@ rl.on('line', input => {
 function calcFibLastDigit (n) {
   if (n < 2) return n
 
-  const fib = [0, 1]
-  for (let i = 2; i < n + 1; i++) {
+  let tempPrev = 0
+  let prev = 1
+  let curr = 1
+  for (let i = 3; i < n + 1; i++) {
+    tempPrev = prev
+    prev = curr
     // 只存個位數就好，我們只在意個位數的變化
-    fib[i] = (fib[i - 1] + fib[i - 2]) % 10
+    curr = (curr + tempPrev) % 10
   }
 
-  return fib[n]
+  return curr
 }

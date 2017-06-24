@@ -18,12 +18,13 @@ const rl = readline.createInterface({
 rl.on('line', input => {
   if (input !== '\n') {
     const n = parseInt(input)
-    const result = calcFib(n)
+    const result = calcFib2(n)
     console.log(result)
     process.exit()
   }
 })
 
+// 使用陣列的解法，優點是易讀
 function calcFib (n) {
   if (n < 2) return n
 
@@ -33,4 +34,20 @@ function calcFib (n) {
   }
 
   return fib[n]
+}
+
+// 若是一次性的計算，其實我們只需要最後的數字，不用陣列來保存全部過程
+function calcFib2 (n) {
+  if (n < 2) return n
+
+  let tempPrev = 0 // F[0]
+  let prev = 1 // F[1]
+  let curr = 1 // F[2]
+  for (let i = 3; i < n + 1; i++) { // 從F[3]開始，一路加到F[n]
+    tempPrev = prev
+    prev = curr
+    curr += tempPrev
+  }
+
+  return curr
 }
