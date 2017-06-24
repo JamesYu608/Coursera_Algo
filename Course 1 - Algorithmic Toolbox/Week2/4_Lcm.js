@@ -8,7 +8,7 @@
 // }
 // 缺點: 太慢
 
-// 連外部module一起打包: ../../node_modules/.bin/browserify --node ./Lcm.js > ./Lcm_bundle.js
+// 連外部module一起打包: ../../node_modules/.bin/browserify --node ./4_Lcm.js > ./Lcm_bundle.js
 
 const readline = require('readline')
 const Big = require('big.js')

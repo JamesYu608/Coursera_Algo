@@ -18,7 +18,7 @@
 // }
 // 缺點: 太慢、當n很大，int放不下
 
-// 連外部module一起打包: ../../node_modules/.bin/browserify --node ./FibonacciSum.js > ./FibonacciSum_bundle.js
+// 連外部module一起打包: ../../node_modules/.bin/browserify --node ./6_FibonacciSum.js > ./FibonacciSum_bundle.js
 
 const readline = require('readline')
 const Big = require('big.js')

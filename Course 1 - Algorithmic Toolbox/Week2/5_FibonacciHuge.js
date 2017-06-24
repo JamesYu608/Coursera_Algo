@@ -16,7 +16,7 @@
 // }
 // 缺點: 太慢
 
-// 連外部module一起打包: ../../node_modules/.bin/browserify --node ./FibonacciHuge.js > ./FibonacciHuge_bundle.js
+// 連外部module一起打包: ../../node_modules/.bin/browserify --node ./5_FibonacciHuge.js > ./FibonacciHuge_bundle.js
 
 const readline = require('readline')
 const Big = require('big.js')
