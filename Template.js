@@ -22,8 +22,11 @@ rl.on('line', (input) => {
       const a = inputs.map(value => parseInt(value))
 
       // TODO: write your code here
-
-      process.exit()
+      // for (const result of results) {
+      //   process.stdout.write(`${result} `)
+      // }
     }
+
+    process.exit()
   }
 })
