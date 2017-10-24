@@ -1,4 +1,4 @@
-// Binary search tree may contain equal keys
+// Failed case #40/95: Wrong answer
 
 const readline = require('readline')
 
@@ -18,7 +18,12 @@ rl.on('line', (input) => {
     // First line
     if (n === undefined) {
       n = parseInt(input)
-      return
+      if (n === 0) { // Empty tree is considered correct
+        console.log('CORRECT')
+        process.exit()
+      } else {
+        return
+      }
     }
 
     // Information about vertices
@@ -29,13 +34,24 @@ rl.on('line', (input) => {
     currentVertexIndex++
 
     if (currentVertexIndex === n) {
-      // for (const result of results) {
-      //   process.stdout.write(`${result} `)
-      // }
-      console.log(keys)
-      console.log(lefts)
-      console.log(rights)
+      const result = isBinarySearchTree(0, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY)
+        ? 'CORRECT' : 'INCORRECT'
+      console.log(result)
       process.exit()
     }
   }
 })
+
+function isBinarySearchTree (nodeIndex, min, max) {
+  if (nodeIndex === -1) {
+    return true
+  }
+
+  const key = keys[nodeIndex]
+  if (key < min || key >= max) {
+    return false
+  }
+
+  return isBinarySearchTree(lefts[nodeIndex], min, key) &&
+    isBinarySearchTree(rights[nodeIndex], key, max)
+}

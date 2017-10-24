@@ -6,34 +6,95 @@ const rl = readline.createInterface({
   terminal: false
 })
 
+class Node {
+  constructor (key, leftIndex, rightIndex) {
+    this.key = key
+    this.leftIndex = leftIndex
+    this.rightIndex = rightIndex
+    this.isPop = false
+  }
+}
+
 let n // number of vertices, vertex 0 is the root
 let currentVertexIndex = 0
-const keys = []
-const lefts = []
-const rights = []
+const nodes = []
 rl.on('line', (input) => {
   if (input !== '\n') {
     // First line
     if (n === undefined) {
       n = parseInt(input)
-      return
+      if (n === 0) { // Empty tree is considered correct
+        console.log('CORRECT')
+        process.exit()
+      } else {
+        return
+      }
     }
 
     // Information about vertices
     const inputs = input.split(' ').map(value => parseInt(value))
-    keys[currentVertexIndex] = inputs[0]
-    lefts[currentVertexIndex] = inputs[1]
-    rights[currentVertexIndex] = inputs[2]
+    nodes.push(new Node(inputs[0], inputs[1], inputs[2]))
     currentVertexIndex++
 
     if (currentVertexIndex === n) {
-      // for (const result of results) {
-      //   process.stdout.write(`${result} `)
-      // }
-      console.log(keys)
-      console.log(lefts)
-      console.log(rights)
+      const result = inOrderTraversal(nodes[0])
+        ? 'CORRECT' : 'INCORRECT'
+      console.log(result)
       process.exit()
     }
   }
 })
+
+// [想法]
+// 若是Binary Search Tree，使用inOrderTraversal去走訪出來會是排序好的elements
+// 因此InOrderTraversal的實作，唯一需要改變的是每次pop時，檢查有沒有大於先前最後一次pop的值
+function inOrderTraversal (root) {
+  const results = []
+  const stack = []
+  stack.push(root)
+  while (stack.length !== 0) {
+    const top = stack[stack.length - 1]
+
+    const leftIndex = top.leftIndex
+    // 1. 有leftChild，push leftChild
+    if (leftIndex !== -1 && !nodes[leftIndex].isPop) { // 記得檢查有沒有被pop過
+      stack.push(nodes[leftIndex])
+    } else { // 2. 沒有leftChild
+      // 2.1 檢查有沒有違反排序 (實作上唯一改變的地方)
+      const resultsTop = results[results.length - 1]
+      if (resultsTop > top.key) {
+        return false
+      }
+
+      // 2.2 pop目前top node (記錄到results)
+      results.push(top.key)
+      stack.pop()
+      top.isPop = true
+
+      // 2.3 檢查剛才pop的rightChild，若有rightChild，push rightChild
+      const rightIndex = top.rightIndex
+      if (rightIndex !== -1 && !nodes[rightIndex].isPop) { // 記得檢查有沒有被pop過
+        stack.push(nodes[rightIndex])
+      }
+    }
+  }
+
+  return true
+}
+
+// recursive version (input structure: keys, lefts, rights)
+// const result = isBinarySearchTree(0, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY)
+// 不使用這個做法是因為在test case #23/36好像會stack overflow
+// function isBinarySearchTree (nodeIndex, min, max) {
+//   if (nodeIndex === -1) {
+//     return true
+//   }
+//
+//   const key = keys[nodeIndex]
+//   if (key < min || key >= max) {
+//     return false
+//   }
+//
+//   return isBinarySearchTree(lefts[nodeIndex], min, key) &&
+//     isBinarySearchTree(rights[nodeIndex], key, max)
+// }
